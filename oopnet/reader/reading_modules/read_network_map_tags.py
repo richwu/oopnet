@@ -4,7 +4,7 @@ import logging
 
 from oopnet.utils.getters import get_link
 
-from oopnet.utils.getters.get_by_id import get_node
+from oopnet.utils.getters.get_by_id import get_node, get_pipe, get_reservoir, get_tank, get_pump
 from oopnet.reader.decorators import section_reader
 from oopnet.elements.network_map_tags import Vertex
 
@@ -94,4 +94,15 @@ def read_tags(network: Network, block: list):
     Returns:
 
     """
-    pass
+    logger.debug(" >>>>>>>>>>>>> Reading TAGS section")
+    for vals in block:
+        vals = vals["values"]
+        comp_type = vals[0]
+        if comp_type == "NODE":
+          j = get_node(network, vals[1])
+          j.tag = str(vals[2])
+        elif comp_type == "LINK":
+          j = get_pipe(network, vals[1])
+          j.tag = str(vals[2])
+        
+    

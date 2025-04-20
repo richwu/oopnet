@@ -42,10 +42,11 @@ def filesplitter(content: list[str]) -> dict[str, list]:
                 blocks[blockname] = []
             else:
                 vals = {"values": line.split(";")[0].strip().split(" ")}
-                if len(line.split(";")) == 2:
-                    vals["comments"] = line.split(";")[1].strip()
-                else:
-                    vals["comments"] = None
+                if ";" in line:
+                    if len(line.split(";")) == 2:
+                        vals["comments"] = line.split(";")[1].strip()
+                    else:
+                        vals["comments"] = None
                 blocks[blockname].append(vals)
     return blocks
 
@@ -66,10 +67,10 @@ def read(
     """
     modules = [
         read_network_components,
-        read_network_map_tags,
         read_options_and_reporting,
         read_system_operation,
         read_water_quality,
+        read_network_map_tags,
     ]
 
     all_functions = list_section_reader_callables(modules)

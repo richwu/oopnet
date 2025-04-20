@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from io import TextIOWrapper
 import logging
 
-from oopnet.utils.getters.element_lists import get_nodes, get_links
+from oopnet.utils.getters.element_lists import get_nodes, get_pipes, get_links
 from oopnet.writer.decorators import section_writer
 
 if TYPE_CHECKING:
@@ -88,6 +88,14 @@ def write_tags(network: Network, fid: TextIOWrapper):
 
     """
     # ToDo: Implement Printer for Tags
-    # logger.debug('Writing Tags section')
+    logger.debug('Writing Tags section')
     print("[TAGS]", file=fid)
+    for n in get_nodes(network):
+        if n.tag == "" or n.tag is None:
+            continue
+        print('NODE', n.id, n.tag, file=fid)
+    for link in get_pipes(network):
+        if link.tag == "" or link.tag is None:
+            continue
+        print('LINK', link.id, link.tag, file=fid)
     print("\n", end=" ", file=fid)
